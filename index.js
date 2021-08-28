@@ -1,4 +1,5 @@
 const { Plugin } = require("powercord/entities");
+const { FluxDispatcher } = require("powercord/webpack");
 
 module.exports = class ScamDetector extends Plugin {
 
