@@ -1,7 +1,13 @@
 const { Plugin } = require("powercord/entities");
 
 module.exports = class ScamDetector extends Plugin {
+
+  onMessage(data) {
+    console.log(data)
+  }
+
   startPlugin() {
+    FluxDispatcher.subscribe('MESSAGE_CREATE', this.onMessage)
     powercord.api.commands.registerCommand({
       command: "test",
       description: "test",
@@ -31,5 +37,6 @@ module.exports = class ScamDetector extends Plugin {
 
   pluginWillUnload() {
     powercord.api.commands.unregisterCommand("test");
+    FluxDispatcher.unsubscribe('MESSAGE_CREATE', this.onMessage)
   }
 };
