@@ -22,7 +22,6 @@ module.exports = class ScamDetector extends Plugin {
 
     const toast = settings.get("toast", false);
     const cache = settings.get("cache", false);
-
     try {
       var message = data.message.content;
       var authorId = data.message.author.id;
@@ -32,7 +31,8 @@ module.exports = class ScamDetector extends Plugin {
         message.includes("free") &&
         message.includes("nitro") &&
         message.includes("http") &&
-        !messageIds.includes(messageId)
+        !messageIds.includes(messageId) &&
+        authorId != userId
       ) {
         messageIds.push(messageId);
         if (toast) {
@@ -61,18 +61,19 @@ module.exports = class ScamDetector extends Plugin {
         if (cache) {
           console.log(scams);
           if (!scams.hasOwnProperty(guildId)) {
-            scams.push(guildId);
+            scams[guildId] = {};
           }
           if (!scams[guildId].hasOwnProperty(messageId)) {
-            scams[guildId].push(messageId);
-            scams[guildId][messageId].push({
+            scams[guildId][messageId] = {
               authorId: authorId,
               message: message,
-            });
+            };
           }
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async FileLoad() {
