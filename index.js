@@ -15,8 +15,8 @@ module.exports = class ScamDetector extends Plugin {
   }
   
   async onMessage(data) {
-    
-    console.log(g)
+
+    console.log(g.user)
 
     var userId = g.user.id;
 
