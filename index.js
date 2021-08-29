@@ -4,7 +4,7 @@ const { clipboard } = require("electron");
 
 const Settings = require("./settings.jsx");
 
-const currUser = await getModule(["getCurrentUser"], false).getCurrentUser;
+const user = await getModule(["getCurrentUser"]);
 
 module.exports = class ScamDetector extends Plugin {
 
@@ -17,10 +17,12 @@ module.exports = class ScamDetector extends Plugin {
   async onMessage(data) {
     const toasts = this.settings.get("toast", true);
     const cache = this.settings.get("cache", false);
-    
+
+    var userId = user.getCurrentUser().id
+
     console.log(toasts);
 
-    console.log(currUser.id);
+    console.log(userId);
     try {
       var message = data.message.content;
       var authorId = data.message.author.id;
@@ -64,7 +66,7 @@ module.exports = class ScamDetector extends Plugin {
     } catch (error) {}
   }
 
-  startPlugin() {
+  async startPlugin() {
     powercord.api.settings.registerSettings("pc-scamdetector", {
       category: this.entityID,
       label: "Scam Detector",
