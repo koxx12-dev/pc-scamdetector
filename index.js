@@ -6,21 +6,42 @@ const Settings = require("./settings.jsx");
 
 module.exports = class ScamDetector extends Plugin {
 
+  async startPlugin() {
+    this.getCurrentUser = await getModule(
+      ["getCurrentUser"],
+      false
+    ).getCurrentUser();
+
+    console.log(this.getCurrentUser.id);
+
+    powercord.api.settings.registerSettings("pc-scamdetector", {
+      category: this.entityID,
+      label: "Scam Detector",
+      render: Settings,
+    });
+
+    FluxDispatcher.subscribe("MESSAGE_CREATE", this.onMessage);
+  }
+
+  pluginWillUnload() {
+    FluxDispatcher.unsubscribe("MESSAGE_CREATE", this.onMessage);
+    powercord.api.settings.unregisterSettings("pc-scamdetector");
+  }
+
   getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
   }
-  
+
   async onMessage(data) {
-
-    return;
-
-    const user = idk;
+  
+    const toast = this.settings.get("toast", true);
+    const cache = this.settings.get("cache", false);
 
     var userId = 0;
 
-    console.log(g.toasts);
+    console.log(toast);
 
     console.log(userId);
     try {
@@ -33,8 +54,8 @@ module.exports = class ScamDetector extends Plugin {
         message.includes("nitro") &&
         message.includes("http")
       ) {
-        console.log(data)
-        if (g.toasts) {
+        console.log(data);
+        if (toast) {
           powercord.api.notices.sendToast(
             "scam-decetector-" + this.getRandomInt(1, 100).toString(),
             {
@@ -60,31 +81,9 @@ module.exports = class ScamDetector extends Plugin {
             }
           );
         }
-        if (g.cache) {
+        if (cache) {
         }
       }
     } catch (error) {}
-  }
-
-  async startPlugin() {
-    this.getCurrentUser = await getModule(["getCurrentUser"],false).getCurrentUser();
-
-    console.log(this.getCurrentUser)
-
-    g.toasts = this.settings.get("toast", true);
-    g.cache = this.settings.get("cache", false);
-
-    powercord.api.settings.registerSettings("pc-scamdetector", {
-      category: this.entityID,
-      label: "Scam Detector",
-      render: Settings,
-    });
-
-    FluxDispatcher.subscribe('MESSAGE_CREATE', this.onMessage)
-  }
-
-  pluginWillUnload() {
-    FluxDispatcher.unsubscribe('MESSAGE_CREATE', this.onMessage)
-    powercord.api.settings.unregisterSettings("pc-scamdetector");
   }
 };
