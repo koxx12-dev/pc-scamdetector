@@ -61,7 +61,7 @@ module.exports = class ScamDetector extends Plugin {
   }
 
   startPlugin() {
-    global.pcScamUser = this.getCurrentUser();
+    global.pcScamUser = getModule(["getCurrentUser"], false).getCurrentUser;
     global.pcScamToasts = this.settings.get("toast", true);
     global.pcScamUseCache = this.settings.get("cache", false);
 
