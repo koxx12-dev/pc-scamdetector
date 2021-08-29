@@ -17,8 +17,10 @@ module.exports = class ScamDetector extends Plugin {
 
     var userId = await getModule(["getCurrentUser"], false).getCurrentUser().id;
 
-    const toast = settings.get("toast", true);
+    const toast = settings.get("toast", false);
     const cache = settings.get("cache", false);
+
+    console.log(messageIds)
 
     try {
       var message = data.message.content;
@@ -33,8 +35,7 @@ module.exports = class ScamDetector extends Plugin {
       ) {
         messageIds.push(messageId);
         if (toast) {
-          powercord.api.notices.sendToast(
-            "scam-decetector-" + this.getRandomInt(1, 100).toString(),
+          powercord.api.notices.sendToast("scam-decetector",
             {
               header: "Detected a scam url",
               content: 'Click "copy" to copy the content of the message',

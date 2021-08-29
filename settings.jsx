@@ -5,17 +5,17 @@ module.exports = ({ getSetting, updateSetting, toggleSetting }) => (
   <div>
     <SwitchItem
       note="Whether the popup is showed"
-      value={getSetting("toast", true)}
+      value={getSetting("toast", false)}
       onChange={() => toggleSetting("toast")}
     >
-      Scam url popup
+      Scam url popup (very buggy)
     </SwitchItem>
     <SwitchItem
-      note="Saves scam messages to a json file to plugin directory (will cause issues with powercord update system)"
+      note="Saves scam messages to a json file in plugin directory (will cause issues with powercord update system)"
       value={getSetting("cache", false)}
       onChange={() => toggleSetting("cache")}
     >
-      Cache url
+      Cache data
     </SwitchItem>
   </div>
 );
