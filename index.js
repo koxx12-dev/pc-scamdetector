@@ -4,6 +4,8 @@ const { clipboard } = require("electron");
 
 const Settings = require("./settings.jsx");
 
+var messageIds = [];
+
 module.exports = class ScamDetector extends Plugin {
   getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -12,7 +14,7 @@ module.exports = class ScamDetector extends Plugin {
   }
 
   async onMessage(data, settings) {
-    
+
     var userId = await getModule(["getCurrentUser"], false).getCurrentUser().id;
 
     const toast = settings.get("toast", true);
@@ -26,8 +28,10 @@ module.exports = class ScamDetector extends Plugin {
       if (
         message.includes("free") &&
         message.includes("nitro") &&
-        message.includes("http")
+        message.includes("http") &&
+        !messageIds.includes(messageId)
       ) {
+        messageIds.push(messageId);
         if (toast) {
           powercord.api.notices.sendToast(
             "scam-decetector-" + this.getRandomInt(1, 100).toString(),
