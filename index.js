@@ -13,18 +13,24 @@ module.exports = class ScamDetector extends Plugin {
   }
 
   onMessage(data) {
-    console.log(data)
+
+    const toasts = this.settings.get("toast", true);
+    const useCache = this.settings.get("cache", false);
+    console.log(__dirname);
+    console.log(getCurrentUser().id);
     try {
       var message = data.message.content;
       var authorId = data.message.author.id;
       var messageId = data.message.id;
-      var guildId = data.message.author.id;
+      var guildId = data.message.guild_id;
       if (
         message.includes("free") &&
         message.includes("nitro") &&
         message.includes("http") &&
         getCurrentUser().id != authorId
       ) {
+        console.log(data)
+        if (toasts) {
         powercord.api.notices.sendToast(
           "scam-decetector-" + this.getRandomInt(1, 100).toString(),
           {
@@ -49,6 +55,10 @@ module.exports = class ScamDetector extends Plugin {
             ],
           }
         );
+        }
+        if (useCache) {
+
+        }
       }
     } catch (error) {}
   }
