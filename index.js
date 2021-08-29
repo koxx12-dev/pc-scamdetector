@@ -23,8 +23,6 @@ module.exports = class ScamDetector extends Plugin {
     const toast = settings.get("toast", false);
     const cache = settings.get("cache", false);
 
-    console.log(scams);
-
     try {
       var message = data.message.content;
       var authorId = data.message.author.id;
@@ -61,6 +59,7 @@ module.exports = class ScamDetector extends Plugin {
           });
         }
         if (cache) {
+          console.log(scams);
           if (!scams.hasOwnProperty(guildId)) {
             scams.push(guildId);
           }
