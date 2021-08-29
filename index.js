@@ -1,5 +1,5 @@
 const { Plugin } = require("powercord/entities");
-const { FluxDispatcher } = require("powercord/webpack");
+const { getModule, FluxDispatcher } = require("powercord/webpack");
 const { clipboard } = require("electron");
 
 const Settings = require("./settings.jsx");
