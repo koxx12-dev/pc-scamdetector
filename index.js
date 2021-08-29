@@ -4,8 +4,6 @@ const { clipboard } = require("electron");
 
 const Settings = require("./settings.jsx");
 
-var userId = 0;
-
 module.exports = class ScamDetector extends Plugin {
   getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -14,6 +12,8 @@ module.exports = class ScamDetector extends Plugin {
   }
 
   async onMessage(data, settings) {
+    
+    var userId = await getModule(["getCurrentUser"], false).getCurrentUser().id;
 
     const toast = settings.get("toast", true);
     const cache = settings.get("cache", false);
@@ -61,13 +61,6 @@ module.exports = class ScamDetector extends Plugin {
   }
 
   async startPlugin() {
-    this.getCurrentUser = await getModule(
-      ["getCurrentUser"],
-      false
-    ).getCurrentUser();
-
-    userId = this.getCurrentUser.id;
-
     powercord.api.settings.registerSettings("pc-scamdetector", {
       category: this.entityID,
       label: "Scam Detector",
