@@ -93,6 +93,13 @@ module.exports = class ScamDetector extends Plugin {
           scams = JSON.parse(data);
         });
       }
+      fs.close(fd, (err) => {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log("File Closed");
+        }
+      });
     });
   }
 
