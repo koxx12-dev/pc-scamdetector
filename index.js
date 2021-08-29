@@ -4,7 +4,7 @@ const { clipboard } = require("electron");
 
 const Settings = require("./settings.jsx");
 
-const g = null;
+const g = Object;
 
 module.exports = class ScamDetector extends Plugin {
 
