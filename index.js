@@ -14,8 +14,8 @@ module.exports = class ScamDetector extends Plugin {
 
   onMessage(data) {
 
-    const toasts = this.settings.get("toast", true);
-    const useCache = this.settings.get("cache", false);
+    const toasts = this.Settings.get("toast", true);
+    const useCache = this.Settings.get("cache", false);
     console.log(this.getCurrentUser().id);
     try {
       var message = data.message.content;
