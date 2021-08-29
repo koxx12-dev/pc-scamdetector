@@ -4,8 +4,6 @@ const { clipboard } = require("electron");
 
 const Settings = require("./settings.jsx");
 
-const g = Object;
-
 module.exports = class ScamDetector extends Plugin {
 
   getRandomInt(min, max) {
@@ -16,9 +14,11 @@ module.exports = class ScamDetector extends Plugin {
   
   async onMessage(data) {
 
-    const user = await getModule(["getCurrentUser"]).getCurrentUser;
+    return;
 
-    var userId = user.id;
+    const user = idk;
+
+    var userId = 0;
 
     console.log(g.toasts);
 
@@ -67,6 +67,9 @@ module.exports = class ScamDetector extends Plugin {
   }
 
   async startPlugin() {
+    this.getCurrentUser = await getModule(["getCurrentUser"],false).getCurrentUser();
+
+    console.log(this.getCurrentUser)
 
     g.toasts = this.settings.get("toast", true);
     g.cache = this.settings.get("cache", false);
