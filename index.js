@@ -16,9 +16,9 @@ module.exports = class ScamDetector extends Plugin {
   
   async onMessage(data) {
 
-    console.log(g.user)
+    const user = await getModule(["getCurrentUser"]).getCurrentUser;
 
-    var userId = g.user.id;
+    var userId = user.id;
 
     console.log(g.toasts);
 
@@ -67,8 +67,6 @@ module.exports = class ScamDetector extends Plugin {
   }
 
   async startPlugin() {
-    
-    g.user = await getModule(["getCurrentUser"]).getCurrentUser;
 
     g.toasts = this.settings.get("toast", true);
     g.cache = this.settings.get("cache", false);
