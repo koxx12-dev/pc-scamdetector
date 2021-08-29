@@ -4,6 +4,8 @@ const { clipboard } = require("electron");
 
 const Settings = require("./settings.jsx");
 
+var userId = 0;
+
 module.exports = class ScamDetector extends Plugin {
 
   async startPlugin() {
@@ -11,8 +13,8 @@ module.exports = class ScamDetector extends Plugin {
       ["getCurrentUser"],
       false
     ).getCurrentUser();
-
-    console.log(this.getCurrentUser.id);
+    
+    userId = this.getCurrentUser.id;
 
     powercord.api.settings.registerSettings("pc-scamdetector", {
       category: this.entityID,
@@ -20,7 +22,7 @@ module.exports = class ScamDetector extends Plugin {
       render: Settings,
     });
 
-    FluxDispatcher.subscribe("MESSAGE_CREATE", this.onMessage);
+    FluxDispatcher.subscribe("MESSAGE_CREATE",(data) => this.onMessage(data,this.settings));
   }
 
   pluginWillUnload() {
@@ -34,12 +36,12 @@ module.exports = class ScamDetector extends Plugin {
     return Math.floor(Math.random() * (max - min)) + min;
   }
 
-  async onMessage(data) {
+  async onMessage(data,settings) {
   
-    const toast = this.settings.get("toast", true);
-    const cache = this.settings.get("cache", false);
+    console.log(data)
 
-    var userId = 0;
+    const toast = settings.get("toast", true);
+    const cache = settings.get("cache", false);
 
     console.log(toast);
 
