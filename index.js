@@ -16,8 +16,7 @@ module.exports = class ScamDetector extends Plugin {
 
     const toasts = this.settings.get("toast", true);
     const useCache = this.settings.get("cache", false);
-    console.log(__dirname);
-    console.log(getCurrentUser().id);
+    console.log(this.getCurrentUser().id);
     try {
       var message = data.message.content;
       var authorId = data.message.author.id;
