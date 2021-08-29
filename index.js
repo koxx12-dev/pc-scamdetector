@@ -5,8 +5,8 @@ const { clipboard } = require("electron");
 const Settings = require("./settings.jsx");
 
 const currUser = getModule(["getCurrentUser"], false).getCurrentUser;
-const toasts = null;
-const cache = null;
+var toasts = null;
+var cache = null;
 
 module.exports = class ScamDetector extends Plugin {
 
