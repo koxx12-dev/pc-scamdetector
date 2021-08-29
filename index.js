@@ -66,7 +66,7 @@ module.exports = class ScamDetector extends Plugin {
 
   async startPlugin() {
 
-    this.user = await getModule(["getCurrentUser"]).getCurrentUser();
+    this.user = await getModule(["getCurrentUser"]).getCurrentUser;
 
     powercord.api.settings.registerSettings("pc-scamdetector", {
       category: this.entityID,
