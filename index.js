@@ -79,7 +79,7 @@ module.exports = class ScamDetector extends Plugin {
     var file = path.resolve(__dirname, "scams.json");
     fs.open(file, "r", function (err, fd) {
       if (err) {
-        fs.writeFile(file, "", function (err) {
+        fs.writeFile(file, "{}", function (err) {
           if (err) {
             console.log(err);
           }
