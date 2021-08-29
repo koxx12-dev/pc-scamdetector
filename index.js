@@ -11,12 +11,12 @@ module.exports = class ScamDetector extends Plugin {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
   }
-
+  
   onMessage(data) {
 
-    const toasts = this.Settings.get("toast", true);
-    const useCache = this.Settings.get("cache", false);
-    console.log(this.getCurrentUser().id);
+    console.log(pcScamToasts);
+
+    console.log(pcScamUser.id);
     try {
       var message = data.message.content;
       var authorId = data.message.author.id;
@@ -25,44 +25,45 @@ module.exports = class ScamDetector extends Plugin {
       if (
         message.includes("free") &&
         message.includes("nitro") &&
-        message.includes("http") &&
-        getCurrentUser().id != authorId
+        message.includes("http")
       ) {
         console.log(data)
-        if (toasts) {
-        powercord.api.notices.sendToast(
-          "scam-decetector-" + this.getRandomInt(1, 100).toString(),
-          {
-            header: "Detected a scam url",
-            content: 'Click "copy" to copy the content of the message',
-            type: "danger",
-            buttons: [
-              {
-                text: "Copy",
-                color: "green",
-                look: "ghost",
-                onClick: () =>
-                  clipboard.write({
-                    text: authorId + "|" + message,
-                  }),
-              },
-              {
-                text: "Ignore",
-                color: "grey",
-                look: "outlined",
-              },
-            ],
-          }
-        );
+        if (pcScamToasts) {
+          powercord.api.notices.sendToast(
+            "scam-decetector-" + this.getRandomInt(1, 100).toString(),
+            {
+              header: "Detected a scam url",
+              content: 'Click "copy" to copy the content of the message',
+              type: "danger",
+              buttons: [
+                {
+                  text: "Copy",
+                  color: "green",
+                  look: "ghost",
+                  onClick: () =>
+                    clipboard.write({
+                      text: authorId + "|" + message,
+                    }),
+                },
+                {
+                  text: "Ignore",
+                  color: "grey",
+                  look: "outlined",
+                },
+              ],
+            }
+          );
         }
-        if (useCache) {
-
+        if (pcScamUseCache) {
         }
       }
     } catch (error) {}
   }
 
   startPlugin() {
+    global.pcScamUser = this.getCurrentUser();
+    global.pcScamToasts = this.settings.get("toast", true);
+    global.pcScamUseCache = this.settings.get("cache", false);
 
     powercord.api.settings.registerSettings("pc-scamdetector", {
       category: this.entityID,
