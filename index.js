@@ -14,7 +14,7 @@ module.exports = class ScamDetector extends Plugin {
   }
 
   async onMessage(data, settings) {
-    
+
     const toast = settings.get("toast", true);
     const cache = settings.get("cache", false);
 
@@ -28,7 +28,6 @@ module.exports = class ScamDetector extends Plugin {
         message.includes("nitro") &&
         message.includes("http")
       ) {
-        console.log(data);
         if (toast) {
           powercord.api.notices.sendToast(
             "scam-decetector-" + this.getRandomInt(1, 100).toString(),
