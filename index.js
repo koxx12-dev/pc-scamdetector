@@ -3,6 +3,7 @@ const { getModule, FluxDispatcher } = require("powercord/webpack");
 const { clipboard } = require("electron");
 const path = require("path");
 const fs = require("fs");
+const request = require("./components/req.js");
 
 const Settings = require("./settings.jsx");
 
@@ -11,6 +12,11 @@ var messageIds = [];
 var scams = {};
 
 module.exports = class ScamDetector extends Plugin {
+
+  get(url) {
+    return new request("GET",url);
+  }
+
   getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -20,13 +26,22 @@ module.exports = class ScamDetector extends Plugin {
   async onMessage(data, settings) {
     var userId = await getModule(["getCurrentUser"], false).getCurrentUser().id;
 
+    var ip = null;
+
+    var urlRegex =
+      /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
+
     const toast = settings.get("toast", false);
     const cache = settings.get("cache", false);
+    const showip = settings.get("showip", true);
+
     try {
+
       var message = data.message.content;
       var authorId = data.message.author.id;
       var messageId = data.message.id;
       var guildId = data.message.guild_id;
+
       if (
         message.includes("free") &&
         message.includes("nitro") &&
@@ -35,6 +50,15 @@ module.exports = class ScamDetector extends Plugin {
         authorId != userId
       ) {
         messageIds.push(messageId);
+        if (showip) {
+          var url = urlRegex.exec(message)[0];
+          try {
+            var req = await this.get(url);
+            ip = req.socket.remoteAddress
+          } catch (error) {
+            ip = undefined
+          }
+        }
         if (toast) {
           powercord.api.notices.sendToast("scam-decetector", {
             header: "Detected a scam url",
@@ -47,7 +71,9 @@ module.exports = class ScamDetector extends Plugin {
                 look: "ghost",
                 onClick: () =>
                   clipboard.write({
-                    text: authorId + "|" + message,
+                    text: showip
+                      ? `${authorId}|\`${message}\`|${ip}`
+                      : `${authorId}|\`${message}\``,
                   }),
               },
               {
@@ -64,10 +90,16 @@ module.exports = class ScamDetector extends Plugin {
             scams[guildId] = {};
           }
           if (!scams[guildId].hasOwnProperty(messageId)) {
-            scams[guildId][messageId] = {
-              authorId: authorId,
-              message: message,
-            };
+            scams[guildId][messageId] = showip
+              ? {
+                  authorId: authorId,
+                  message: message,
+                  ip: ip,
+                }
+              : {
+                  authorId: authorId,
+                  message: message,
+                };
           }
         }
       }

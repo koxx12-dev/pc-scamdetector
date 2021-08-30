@@ -1,7 +1,8 @@
 {
   "name": "Scam detector",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Detects scam urls and informs you about them",
   "author": "koxx12",
-  "license": "MIT"
+  "license": "MIT",
+  "permissions": ["ext_api"]
 }

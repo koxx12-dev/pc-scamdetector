@@ -17,5 +17,12 @@ module.exports = ({ getSetting, updateSetting, toggleSetting }) => (
     >
       Cache data
     </SwitchItem>
+    <SwitchItem
+      note="Saves/Shows the ip in the cache/popup"
+      value={getSetting("showip", true)}
+      onChange={() => toggleSetting("showip")}
+    >
+      Show IP
+    </SwitchItem>
   </div>
 );
