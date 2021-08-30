@@ -8,10 +8,10 @@ module.exports = ({ getSetting, updateSetting, toggleSetting }) => (
       value={getSetting("toast", false)}
       onChange={() => toggleSetting("toast")}
     >
-      Scam url popup (very buggy)
+      Scam url popup (sometiems buggy)
     </SwitchItem>
     <SwitchItem
-      note="Saves scam messages to a json file in plugin directory (will cause issues with powercord update system)"
+      note="Saves scam messages to a json file in plugin directory"
       value={getSetting("cache", false)}
       onChange={() => toggleSetting("cache")}
     >
