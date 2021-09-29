@@ -72,8 +72,8 @@ module.exports = class ScamDetector extends Plugin {
                 onClick: () =>
                   clipboard.write({
                     text: showip
-                      ? `${authorId}|\`${message}\`|${ip}`
-                      : `${authorId}|\`${message}\``,
+                      ? `.ban ${authorId} free nitro | \`${message}\` | ${ip}`
+                      : `.ban ${authorId} free nitro | \`${message}\``,
                   }),
               },
               {
